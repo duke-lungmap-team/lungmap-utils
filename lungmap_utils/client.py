@@ -91,7 +91,7 @@ def get_image_set_candidates():
             }
     for key, value in image_sets.items():
         for x in value['images']:
-            if x['image_id'].split(b'_')[0] not in image_sets[key]['experiments']:
+            if x['experiment_id'] not in image_sets[key]['experiments']:
                 image_sets[key]['experiments'].append(
                     {
                         'experiment_id': x['experiment_id'],
