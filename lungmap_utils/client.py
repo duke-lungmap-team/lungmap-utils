@@ -9,6 +9,19 @@ import gzip
 lungmap_sparql_server = "http://data.lungmap.net/sparql"
 
 
+def get_probes():
+    sparql = SPARQLWrapper(lungmap_sparql_server)
+    sparql.setQuery(sparql_queries.GET_PROBES)
+    sparql.setReturnFormat(JSON)
+    results = sparql.query().convert()
+
+    probes = []
+    for r in results['results']['bindings']:
+        probes.append(r['probe_label']['value'])
+
+    return probes
+
+
 def get_image_set_candidates():
     sparql = SPARQLWrapper(lungmap_sparql_server)
     sparql.setQuery(sparql_queries.GET_BASIC_EXPERIMENTS)

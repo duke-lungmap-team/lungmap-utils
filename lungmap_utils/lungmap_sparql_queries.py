@@ -46,3 +46,15 @@ WHERE {
     ?probe_id rdfs:label ?probe_label
 }
 """
+
+
+GET_PROBES = """
+PREFIX lmdata: <http://www.lungmap.net/ontologies/data#>
+PREFIX lmdb: <http://www.lungmap.net/ontologies/database#>
+SELECT DISTINCT ?probe_label
+WHERE {
+  ?probe_id a lmdb:probe .
+  ?probe_id rdfs:label ?probe_label .
+  ?probe_id lmdb:probe_type lmdata:antibody_probe .  
+} order by ?probe_label
+"""
