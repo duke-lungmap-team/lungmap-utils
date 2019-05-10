@@ -58,3 +58,13 @@ WHERE {
   ?probe_id lmdb:probe_type lmdata:antibody_probe .  
 } order by ?probe_label
 """
+
+
+GET_MAGNIFICATIONS = """
+PREFIX lmdata: <http://www.lungmap.net/ontologies/data#>
+PREFIX lmdb: <http://www.lungmap.net/ontologies/database#>
+SELECT DISTINCT ?o
+WHERE {
+  ?s lmdb:magnification ?o .
+} order by ?o
+"""

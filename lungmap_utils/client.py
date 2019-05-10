@@ -22,6 +22,19 @@ def get_probes():
     return probes
 
 
+def get_magnification_values():
+    sparql = SPARQLWrapper(lungmap_sparql_server)
+    sparql.setQuery(sparql_queries.GET_MAGNIFICATIONS)
+    sparql.setReturnFormat(JSON)
+    results = sparql.query().convert()
+
+    mag_values = []
+    for r in results['results']['bindings']:
+        mag_values.append(r['o']['value'])
+
+    return mag_values
+
+
 def get_image_set_candidates():
     sparql = SPARQLWrapper(lungmap_sparql_server)
     sparql.setQuery(sparql_queries.GET_BASIC_EXPERIMENTS)
