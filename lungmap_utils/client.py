@@ -130,7 +130,7 @@ def get_image_set_candidates():
 
 def _get_by_experiment(query, experiment_id):
     """
-    Query LM mothership (via SPARQL) and get information by a given 
+    Query LungMAP (via SPARQL) and get information by a given
     experiment_id for a particular experiment
     :param query: a predefined query string from lungmap_client that 
     has the replacement string EXPERIMENT_PLACEHOLDER
@@ -185,6 +185,23 @@ def get_probes_by_experiment(experiment_id):
             }
             output.append(row)
         return output
+    except ValueError as e:
+        raise e
+
+
+def get_images_by_metadata(dev_stage, magnification, probes):
+    query = sparql_queries.GET_IMAGES_BY_METADATA
+    query = query.replace('STAGE_PLACEHOLDER', dev_stage)
+    query = query.replace('MAG_PLACEHOLDER', magnification)
+    for i, p in enumerate(probes):
+        query = query.replace('PROBE' + str(i+1) + '_PLACEHOLDER', p)
+
+    try:
+        sparql = SPARQLWrapper(lungmap_sparql_server)
+        sparql.setQuery(query)
+        sparql.setReturnFormat(JSON)
+        results = sparql.query().convert()
+        return results['results']['bindings']
     except ValueError as e:
         raise e
 

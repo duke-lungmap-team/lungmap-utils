@@ -68,3 +68,37 @@ WHERE {
   ?s lmdb:magnification ?o .
 } order by ?o
 """
+
+GET_IMAGES_BY_METADATA = """
+PREFIX lmdata: <http://www.lungmap.net/ontologies/data#>
+PREFIX lmdb: <http://www.lungmap.net/ontologies/database#>
+SELECT DISTINCT ?exp ?stage_label ?mag ?probe1 ?color1 ?probe2 ?color2 ?probe3 ?color3 ?image ?image_url
+WHERE {
+  VALUES(?probe1) {("PROBE1_PLACEHOLDER")} .
+  VALUES(?probe2) {("PROBE2_PLACEHOLDER")} .
+  VALUES(?probe3) {("PROBE3_PLACEHOLDER")} .
+  VALUES(?mag) {("MAG_PLACEHOLDER")} .
+  VALUES(?stage_label) {("STAGE_PLACEHOLDER")} .
+  ?exp a lmdb:experiment .
+  ?exp lmdb:in_stage ?stage .
+  ?stage rdfs:label ?stage_label .
+  ?exp lmdb:has_probe_color ?probe1_color .
+  ?exp lmdb:has_probe_color ?probe2_color .
+  ?exp lmdb:has_probe_color ?probe3_color .
+  ?probe1_color lmdb:maps_to ?probe1_id .
+  ?probe2_color lmdb:maps_to ?probe2_id .
+  ?probe3_color lmdb:maps_to ?probe3_id .
+  ?probe1_color lmdb:color ?color1 .
+  ?probe2_color lmdb:color ?color2 .
+  ?probe3_color lmdb:color ?color3 .
+  ?probe1_id rdfs:label ?probe1 .
+  ?probe2_id rdfs:label ?probe2 .
+  ?probe3_id rdfs:label ?probe3 .
+  ?image lmdb:part_of_experiment ?exp .
+  ?image rdf:type lmdb:expression_image .
+  ?image lmdb:magnification ?mag .
+  ?image lmdb:has_supporting_file ?image_file .
+  ?image_file lmdb:file_type "image_original" .
+  ?image_file lmdb:display_url ?image_url
+} ORDER BY ?exp
+"""
